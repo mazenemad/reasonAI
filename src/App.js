@@ -90,7 +90,7 @@ const Wave = () => {
   ]);
 
   return (
-    <mesh scale={2000} rotation={[-Math.PI/2,0,0]} position={[0,-140,0]}>
+    <mesh scale={2000} rotation={[-Math.PI/2,0,0]} position={[0,-240,0]}>
       <planeGeometry args={[0.4, 0.6, 16, 16]} />
       <waveShaderMaterial uColor={"white"} ref={ref} uTexture={image} />
     </mesh>
@@ -106,17 +106,14 @@ const Model = ({ model, scale, position = [0, 0, 0], cubeTextures,rotation = [0,
 
   useEffect(()=>{
     console.log(name,modelRef.current.position)
-    // if(modelRef)
-    // setOldPos(modelRef.current.position)
   },[modelRef])
-  // Play the first animation clip by default
   const mixer = useRef();
   const actions = useRef([]);
 
   if (gltf.animations.length && !mixer.current) {
     mixer.current = new THREE.AnimationMixer(gltf.scene);
     actions.current = gltf.animations.map((clip) => mixer.current.clipAction(clip));
-    actions.current[0].play(); // Play the first animation clip
+    actions.current[0].play();
   }
 
 
@@ -126,20 +123,10 @@ const Model = ({ model, scale, position = [0, 0, 0], cubeTextures,rotation = [0,
     }
   });
 
-  // Assign the cube texture to the model's materials for reflections
   useEffect(() => {
     if (gltf.scene && cubeTextures) {
       const cubeTextureLoader = new THREE.CubeTextureLoader();
       const envMap = cubeTextureLoader.load(cubeTextures);
-      // envMap.encoding = THREE.sRGBEncoding;
-
-      // gltf.scene.traverse((child) => {
-      //   if (child.isMesh) {
-      //     child.material.envMap = envMap;
-      //     child.material.envMapIntensity = 0.1; // Adjust intensity as needed
-      //     child.material.needsUpdate = true;
-      //   }
-      // });
     }
   }, [gltf.scene, cubeTextures]);
   let bro = true
@@ -158,11 +145,7 @@ const Model = ({ model, scale, position = [0, 0, 0], cubeTextures,rotation = [0,
     easing.damp3(modelRef.current.position,new THREE.Vector3(-40,-10,-1), 0.4, dt)
     if(name==='digital-face'&&!start)
     easing.damp3(modelRef.current.position,mainPositions[name], 0.4, dt)
-  
 
-    // if(bro&&start){
-    //   easing.damp3(modelRef.current.scale,new THREE.Vector3(0,0,0),0.2,dt)
-    // }
   },[start])
   return (
     <primitive
